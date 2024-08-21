@@ -1,0 +1,23 @@
+xypp-invite-user:
+  forum:
+    page:
+      title: invite
+      code:
+        title: Invite User
+        code: Invite Code
+        url: Invite URL
+      my:
+        title: My Invite User
+        code: Input Invite Code
+      invite:
+        username: Username
+        avatar: Avatar
+    confirm:
+      title: Confirm Invitation
+      msg: User {username} invited you to the forum. Click the button below to accept this user as your invite user.
+      accept: Accept
+    invite: Invite
+  api:
+    invited_by_user_id_is_self: You cannot invite yourself.
+    has_already_be_invited: You have already accepted another invite user.
+    invited_by_user_id_is_empty: Invited by user id is empty.
