@@ -5,8 +5,14 @@ import InvitedUser from '../common/model/InvitedUser';
 
 declare module 'flarum/common/models/User' {
     export default interface User {
-        invitedByUser(): InvitedUser | false;
-        invitedUsers(): InvitedUser[] | false;
-        inviteCode(): InviteCode | false;
+        invitedByUser(): InvitedUser | undefined;
+        invitedUsers(): InvitedUser[] | undefined;
+    }
+}
+declare module 'flarum/common/models/Forum' {
+    export default interface Forum {
+        inviteCode(): InviteCode | undefined;
+        invitation(): InviteCode | undefined ;
+        invitedByUser(): InvitedUser | undefined;
     }
 }

@@ -13,7 +13,7 @@ class InvitedUser extends AbstractModel
     {
         return $this->hasOne(User::class, "user_id", "id");
     }
-    public function invitedByUser()
+    public function inviter()
     {
         return $this->hasOne(User::class, "invited_by_user_id", "id");
     }

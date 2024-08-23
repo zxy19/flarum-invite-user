@@ -7,7 +7,4 @@ import User from 'flarum/common/models/User';
 export default class InviteCode extends Model {
     user = Model.hasOne<User>('user');
     code = Model.attribute<string>('code');
-    protected apiEndpoint(): string {
-        return '/invite-code' + (this.exists ? '/' + this.code() : '');
-    }
 }

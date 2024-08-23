@@ -3,6 +3,7 @@
 namespace Xypp\InviteUser\Api\Serializer;
 
 use Flarum\Api\Serializer\AbstractSerializer;
+use Flarum\Api\Serializer\BasicUserSerializer;
 use Flarum\Foundation\ValidationException;
 use Xypp\InviteUser\InviteCode;
 use Xypp\InviteUser\InvitedUser;
@@ -20,5 +21,9 @@ class InvitedCodeSerializer extends AbstractSerializer
             'user_id' => $invitedCode->user_id,
             'code' => $invitedCode->code,
         ];
+    }
+    public function user($invitedCode)
+    {
+        return $this->hasOne($invitedCode, BasicUserSerializer::class, 'user');
     }
 }

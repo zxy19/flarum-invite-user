@@ -7,10 +7,24 @@ import { extend } from 'flarum/common/extend';
 import UserPage from 'flarum/forum/components/UserPage';
 import LinkButton from 'flarum/common/components/LinkButton';
 import { InvitePage } from './components/InvitePage';
+import Forum from 'flarum/common/models/Forum';
+import ConfirmModal from './components/ConfirmModal';
+import { processInviteCode } from './utils/inviteCodeUtil';
+function createWarpedModel<T>(call: () => T | false | null | undefined): () => (T | undefined) {
+  return function (this: any) {
+    return call.call(this) || undefined;
+  };
+}
+function createWarpedModelArray<T>(call: () => (T | undefined)[] | false | null | undefined): () => (T[] | undefined) {
+  return function (this: any) {
+    return (call.call(this) || []).filter(v => !!v) as T[];
+  };
+}
 app.initializers.add('xypp/flarum-invite-user', () => {
-  User.prototype.invitedByUser = Model.hasOne<InvitedUser>('invitedByUser') as any;
-  User.prototype.invitedUsers = Model.hasMany<InvitedUser>('invitedUsers') as any;
-  User.prototype.inviteCode = Model.hasOne<InviteCode>('inviteCode');
+  User.prototype.invitedByUser = createWarpedModel(Model.hasOne<InvitedUser>('invitedByUser'));
+  User.prototype.invitedUsers = createWarpedModelArray(Model.hasMany<InvitedUser>('invitedUsers'));
+  Forum.prototype.inviteCode = createWarpedModel(Model.hasOne<InviteCode>('inviteCode'));
+  Forum.prototype.invitation = createWarpedModel(Model.hasOne<InviteCode>('invitation'));
   app.routes['user.invite'] = {
     path: '/u/:username/invite',
     component: InvitePage,
@@ -32,4 +46,23 @@ app.initializers.add('xypp/flarum-invite-user', () => {
       );
     }
   });
+  setTimeout(() => {
+    if (app.forum.invitation()) {
+      if (app.session?.user) {
+        localStorage.removeItem('inviteCode');
+        app.modal.show(ConfirmModal, {
+          code: app.forum.invitation()
+        });
+      } else {
+        // Store the code in localStorage to be used later after login
+        localStorage.setItem('inviteCode', app.forum.invitation()?.code() || "");
+      }
+    } else if (localStorage.getItem('inviteCode')) {
+      processInviteCode(localStorage.getItem('inviteCode') + "").then(code => {
+        localStorage.removeItem('inviteCode');
+        app.modal.show(ConfirmModal, { code });
+      });
+    }
+  }, 1000);
 });
+

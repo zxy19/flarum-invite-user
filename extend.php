@@ -11,13 +11,15 @@
 
 namespace Xypp\InviteUser;
 
+use Flarum\Api\Controller\ShowForumController;
 use Flarum\Api\Controller\ShowUserController;
 use Flarum\Api\Serializer\BasicUserSerializer;
+use Flarum\Api\Serializer\ForumSerializer;
 use Flarum\Extend;
 use Flarum\User\User;
 use Xypp\InviteUser\Api\Controller\AddInvitedByUserController;
 use Xypp\InviteUser\Api\Controller\CreateCodeController;
-use Xypp\InviteUser\Api\Controller\ShowCodeUserController;
+use Xypp\InviteUser\Api\Controller\ShowCodeController;
 use Xypp\InviteUser\Api\Serializer\InvitedCodeSerializer;
 use Xypp\InviteUser\Api\Serializer\InvitedUserSerializer;
 
@@ -33,14 +35,20 @@ return [
         ->hasOne('inviteCode', InviteCode::class, 'user_id')
         ->hasMany('invitedUsers', InvitedUser::class, 'invited_by_user_id')
         ->hasOne('invitedByUser', InvitedUser::class, 'user_id'),
-    (new Extend\ApiSerializer(BasicUserSerializer::class))
+
+    (new Extend\ApiSerializer(ForumSerializer::class))
         ->hasOne('inviteCode', InvitedCodeSerializer::class)
+        ->hasOne('invitation', InvitedCodeSerializer::class)
+        ->hasOne('invitedByUser', InvitedUserSerializer::class),
+    (new Extend\ApiSerializer(BasicUserSerializer::class))
         ->hasMany('invitedUsers', InvitedUserSerializer::class)
         ->hasOne('invitedByUser', InvitedUserSerializer::class),
     (new Extend\ApiController(ShowUserController::class))
-        ->addInclude(['inviteCode', 'invitedUsers', 'invitedByUser', 'invitedUsers.user', 'invitedByUser.user']),
+        ->addOptionalInclude(['invitedUsers', 'invitedByUser', 'invitedUsers.user', 'invitedByUser.inviter']),
     (new Extend\Routes('api'))
-        ->get('/invite-code', 'inviteCode.create', CreateCodeController::class)
-        ->get('/invite-code/{code}', 'inviteCode.show', ShowCodeUserController::class)
-        ->post('/invite-user', "invitedUser.create", AddInvitedByUserController::class)
+        ->get('/invite-codes/{code}', 'inviteCode.show', ShowCodeController::class)
+        ->post('/invited-users', "invitedUser.create", AddInvitedByUserController::class),
+    (new Extend\ApiController(ShowForumController::class))
+        ->addInclude(['inviteCode', "invitation", "invitation.user", "invitedByUser"])
+        ->prepareDataForSerialization(ForumRelation::class),
 ];

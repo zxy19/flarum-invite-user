@@ -7,7 +7,4 @@ import User from 'flarum/common/models/User';
 export default class InvitedUser extends Model {
     user = Model.hasOne<User>('user');
     inviter = Model.hasOne<User>('invitedByUser');
-    protected apiEndpoint(): string {
-        return '/invite-user';
-    }
 }

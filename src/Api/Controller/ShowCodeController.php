@@ -6,18 +6,18 @@ use Flarum\Api\Serializer\BasicUserSerializer;
 use Flarum\Http\RequestUtil;
 use Illuminate\Support\Arr;
 use Psr\Http\Message\ServerRequestInterface;
+use Xypp\InviteUser\Api\Serializer\InvitedCodeSerializer;
 use Xypp\InviteUser\InviteCode;
 
-class ShowCodeUserController extends AbstractShowController
+class ShowCodeController extends AbstractShowController
 {
-    public $serializer = BasicUserSerializer::class;
-
+    public $serializer = InvitedCodeSerializer::class;
+    public $include = ['user'];
     protected function data(ServerRequestInterface $request, $document)
     {
         $actor = RequestUtil::getActor($request);
         $actor->assertRegistered();
         $code = Arr::get($request->getQueryParams(), 'code');
-        $codeObj = InviteCode::where('code', $code)->firstOrFail();
-        return $codeObj->user();
+        return InviteCode::where('code', $code)->firstOrFail();
     }
 }

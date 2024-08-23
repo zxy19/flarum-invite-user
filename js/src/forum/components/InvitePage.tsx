@@ -8,12 +8,16 @@ import avatar from 'flarum/common/helpers/avatar';
 import username from 'flarum/common/helpers/username';
 import Link from 'flarum/common/components/Link';
 import InviteCode from '../../common/model/InviteCode';
+import { showIf } from '../utils/NodeUtil';
+import { processInviteCode } from '../utils/inviteCodeUtil';
+import ConfirmModal from './ConfirmModal';
 function _trans(key: string, ...params: any) {
     return app.translator.trans(`xypp-invite-user.forum.page.${key}`, ...params);
 }
 export class InvitePage extends UserPage {
     loading: boolean = false;
     url: string = '';
+    queryCode: boolean = false;
     oninit(vnode: any) {
         super.oninit(vnode);
         this.user = null;
@@ -27,21 +31,11 @@ export class InvitePage extends UserPage {
 
         app.store
             .find('users', user.id() + "", {
-                include: 'invitedUsers,invitedUsers.user,inviteCode,invitedByUser,invitedByUser.user',
+                include: 'invitedUsers,invitedUsers.user,invitedByUser,invitedByUser.inviter',
             })
             .then(async () => {
                 this.loading = false;
-                if (this.user?.inviteCode())
-                    this.url = app.forum.attribute("baseUrl") + "?inviteCode=" + (this.user.inviteCode() || undefined)?.code();
-                else {
-                    const code = await new InviteCode().save({});
-                    this.user?.pushData({
-                        relationships: {
-                            "inviteCode": code
-                        }
-                    });
-                    m.redraw();
-                }
+                this.url = app.forum.attribute("baseUrl") + "?inviteCode=" + (app.forum.inviteCode() || undefined)?.code();
                 m.redraw();
             });
     }
@@ -51,28 +45,51 @@ export class InvitePage extends UserPage {
         }
         return (
             <div className="invite-page-container">
-                <div>
-                    <h2>{_trans("code.title")}</h2>
-                    <div className="Form-group">
-                        <label for="xypp-invite-code">{_trans("code.code")}</label>
-                        <input readonly id="xypp-invite-code" type="text" className='FormControl' value={(this.user.inviteCode() || undefined)?.code()} />
+                {app.session?.user?.id() === this.user.id() ?
+                    <div>
+                        <h2>{_trans("code.title")}</h2>
+                        <div className="Form-group">
+                            <label for="xypp-invite-code">{_trans("code.code")}</label>
+                            <input readonly id="xypp-invite-code" type="text" className='FormControl' value={app.forum.inviteCode()?.code()} />
+                        </div>
+                        <div className="Form-group">
+                            <label for="xypp-invite-url">{_trans("code.url")}</label>
+                            <input readonly id="xypp-invite-url" type="text" className='FormControl' value={
+                                app.forum.attribute("baseUrl") + "?inviteCode=" + app.forum.inviteCode()?.code()
+                            } />
+                        </div>
                     </div>
-                    <div className="Form-group">
-                        <label for="xypp-invite-url">{_trans("code.url")}</label>
-                        <input readonly id="xypp-invite-url" type="text" className='FormControl' value={this.url} />
-                    </div>
-                </div>
+                    : ""}
                 <div>
                     <h2>{_trans("my.title")}</h2>
-                    <div className="Form-group">
-                        <label for="xypp-invite-url">{_trans("code.url")}</label>
-                        <input readonly id="xypp-invite-url" type="text" className='FormControl' value={this.url} />
-                    </div>
-                    <div className="Form-group">
-                        <Button className="Button Button--primary">
-                            {_trans("code.copy")}
-                        </Button>
-                    </div>
+                    {
+                        showIf(!!(this.user.invitedByUser()),
+                            [
+                                <div>
+                                    <label for="xypp-invite-code-input">{_trans("my.inviter")}</label>
+                                </div>,
+                                <div>
+                                    {avatar(this.user.invitedByUser()?.inviter() || null)}
+                                    {username(this.user.invitedByUser()?.inviter() || null)}
+                                </div>
+                            ]
+                            ,
+                            [
+                                <div className="Form-group">
+                                    <label for="xypp-invite-code-input">{_trans("my.code")}</label>
+                                    <input id="xypp-invite-code-input" type="text" className='FormControl' />
+                                </div>,
+                                <div className="Form-group">
+                                    <Button disabled={this.queryCode}
+                                        loading={this.queryCode}
+                                        className="Button Button--primary"
+                                        onclick={this.fillCode.bind(this)}>
+                                        {_trans("my.accept")}
+                                    </Button>
+                                </div>
+                            ]
+                        )
+                    }
                 </div>
                 <div>
                     <h2>{_trans("invite.title")}</h2>
@@ -102,5 +119,16 @@ export class InvitePage extends UserPage {
             </div>
         );
     }
-
+    async fillCode() {
+        this.queryCode = true;
+        m.redraw();
+        const code = this.$('#xypp-invite-code-input');
+        try {
+            const codeObj = await processInviteCode(code.val() as string);
+            app.modal.show(ConfirmModal, { code: codeObj }, true);
+        } finally {
+            this.queryCode = false;
+            m.redraw();
+        }
+    }
 }
