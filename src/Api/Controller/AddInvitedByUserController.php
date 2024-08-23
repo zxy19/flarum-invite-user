@@ -10,16 +10,19 @@ use Illuminate\Support\Arr;
 use Psr\Http\Message\ServerRequestInterface;
 use Tobscure\JsonApi\Document;
 use Xypp\InviteUser\Api\Serializer\InvitedUserSerializer;
+use Xypp\InviteUser\Helper\InviteReward;
 use Xypp\InviteUser\InvitedUser;
 class AddInvitedByUserController extends AbstractCreateController
 {
     public $serializer = InvitedUserSerializer::class;
     protected $settings;
     protected $translator;
-    public function __construct(SettingsRepositoryInterface $settings, Translator $translator)
+    protected $inviteReward;
+    public function __construct(SettingsRepositoryInterface $settings, Translator $translator, InviteReward $inviteReward)
     {
         $this->settings = $settings;
         $this->translator = $translator;
+        $this->inviteReward = $inviteReward;
     }
     protected function data(ServerRequestInterface $request, Document $document)
     {
@@ -44,6 +47,9 @@ class AddInvitedByUserController extends AbstractCreateController
             $invitedUserModel->user_id = $actor->id;
             $invitedUserModel->updateTimestamps();
             $invitedUserModel->save();
+
+            $this->inviteReward->notify($invitedByUser, $actor, $invitedUserModel);
+            $this->inviteReward->reward($invitedBy, $actor);
 
             return $invitedUserModel;
         } else {

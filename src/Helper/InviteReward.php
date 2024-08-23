@@ -8,6 +8,7 @@ use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\User;
 use Xypp\InviteUser\InvitedUser;
 use Illuminate\Events\Dispatcher;
+use Xypp\InviteUser\Notification\UserInvitedNotification;
 
 class InviteReward
 {
@@ -49,6 +50,9 @@ class InviteReward
     }
     public function notify(User $inviter, User $user, InvitedUser $invitedUser)
     {
-
+        $this->notifications->sync(
+            new UserInvitedNotification($invitedUser, $user),
+            [$inviter]
+        );
     }
 }

@@ -14,7 +14,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var flarum_admin_app__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(flarum_admin_app__WEBPACK_IMPORTED_MODULE_0__);
 
 flarum_admin_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('xypp/flarum-invite-user', function () {
-  console.log('[xypp/flarum-invite-user] Hello, admin!');
+  flarum_admin_app__WEBPACK_IMPORTED_MODULE_0___default().extensionData["for"]('xypp-invite-user').registerSetting({
+    setting: 'xypp-invite.reward_inviter',
+    type: 'number',
+    label: flarum_admin_app__WEBPACK_IMPORTED_MODULE_0___default().translator.trans('xypp-invite-user.admin.settings.reward_invite.title'),
+    help: flarum_admin_app__WEBPACK_IMPORTED_MODULE_0___default().translator.trans('xypp-invite-user.admin.settings.reward_invite.description')
+  }).registerSetting({
+    setting: 'xypp-invite.reward_be_invited',
+    type: 'number',
+    label: flarum_admin_app__WEBPACK_IMPORTED_MODULE_0___default().translator.trans('xypp-invite-user.admin.settings.reward_be_invited.title'),
+    help: flarum_admin_app__WEBPACK_IMPORTED_MODULE_0___default().translator.trans('xypp-invite-user.admin.settings.reward_be_invited.description')
+  });
 });
 
 /***/ }),

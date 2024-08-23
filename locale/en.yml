@@ -12,6 +12,7 @@ xypp-invite-user:
         inviter: You have accepted the user as your invite user.
         accept: Accept
       invite:
+        title: Invited User
         username: Username
         avatar: Avatar
     confirm:
@@ -21,6 +22,17 @@ xypp-invite-user:
       accept: Accept
       success: Success.
     invite: Invite
+    notification:
+      user_invited: "{username} just accepted your invitation."
+      user_invited_label: Invitation Accepted
+  admin:
+    settings:
+      reward_invite:
+        title: Reward Invite
+        description: Reward to inviter.
+      reward_be_invited:
+        title: Reward Be Invited
+        description: Reward to user be invited.
   api:
     invited_by_user_id_is_self: You cannot invite yourself.
     has_already_be_invited: You have already accepted another invite user.

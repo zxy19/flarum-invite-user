@@ -8,7 +8,7 @@ import avatar from 'flarum/common/helpers/avatar';
 import username from 'flarum/common/helpers/username';
 import Link from 'flarum/common/components/Link';
 import InviteCode from '../../common/model/InviteCode';
-import { showIf } from '../utils/NodeUtil';
+import { showIf } from '../utils/nodeUtil';
 import { processInviteCode } from '../utils/inviteCodeUtil';
 import ConfirmModal from './ConfirmModal';
 function _trans(key: string, ...params: any) {
@@ -69,8 +69,11 @@ export class InvitePage extends UserPage {
                                     <label for="xypp-invite-code-input">{_trans("my.inviter")}</label>
                                 </div>,
                                 <div>
-                                    {avatar(this.user.invitedByUser()?.inviter() || null)}
-                                    {username(this.user.invitedByUser()?.inviter() || null)}
+                                    <Link className='invited-by-user-container' href={app.route.user(this.user.invitedByUser()?.inviter() as User)}>
+                                        {avatar(this.user.invitedByUser()?.inviter() || null)}
+                                        &nbsp;
+                                        {username(this.user.invitedByUser()?.inviter() || null)}
+                                    </Link>
                                 </div>
                             ]
                             ,

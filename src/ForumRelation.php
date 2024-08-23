@@ -33,6 +33,7 @@ class ForumRelation
         }
         $invitedBy = InvitedUser::where('user_id', $actor->id)->first();
         $data['invitedByUser'] = $invitedBy;
+        $data['invitation'] = null;
         if ($inviteCode = Arr::get($request->getQueryParams(), "inviteCode")) {
             if (!$invitedBy)
                 $data['invitation'] = InviteCode::where('code', $inviteCode)->first();

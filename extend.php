@@ -22,6 +22,7 @@ use Xypp\InviteUser\Api\Controller\CreateCodeController;
 use Xypp\InviteUser\Api\Controller\ShowCodeController;
 use Xypp\InviteUser\Api\Serializer\InvitedCodeSerializer;
 use Xypp\InviteUser\Api\Serializer\InvitedUserSerializer;
+use Xypp\InviteUser\Notification\UserInvitedNotification;
 
 return [
     (new Extend\Frontend('forum'))
@@ -44,11 +45,16 @@ return [
         ->hasMany('invitedUsers', InvitedUserSerializer::class)
         ->hasOne('invitedByUser', InvitedUserSerializer::class),
     (new Extend\ApiController(ShowUserController::class))
-        ->addOptionalInclude(['invitedUsers', 'invitedByUser', 'invitedUsers.user', 'invitedByUser.inviter', 'invitedByUser.user']),
+        ->addOptionalInclude(['invitedUsers', 'invitedByUser', 'invitedUsers.user', 'invitedByUser.inviter']),
     (new Extend\Routes('api'))
         ->get('/invite-codes/{code}', 'inviteCode.show', ShowCodeController::class)
         ->post('/invited-users', "invitedUser.create", AddInvitedByUserController::class),
     (new Extend\ApiController(ShowForumController::class))
         ->addInclude(['inviteCode', "invitation", "invitation.user", "invitedByUser"])
         ->prepareDataForSerialization(ForumRelation::class),
+    (new Extend\Notification())
+        ->type(UserInvitedNotification::class, InvitedUserSerializer::class),
+    (new Extend\Settings())
+        ->default('xypp-invite.reward_be_invited', 5)
+        ->default('xypp-invite.reward_inviter', 10)
 ];

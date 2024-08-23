@@ -10,6 +10,8 @@ import { InvitePage } from './components/InvitePage';
 import Forum from 'flarum/common/models/Forum';
 import ConfirmModal from './components/ConfirmModal';
 import { processInviteCode } from './utils/inviteCodeUtil';
+import NotificationGrid from 'flarum/forum/components/NotificationGrid';
+import UserInvitedNotification from './notification/QuestDoneNotification';
 function createWarpedModel<T>(call: () => T | false | null | undefined): () => (T | undefined) {
   return function (this: any) {
     return call.call(this) || undefined;
@@ -29,6 +31,7 @@ app.initializers.add('xypp/flarum-invite-user', () => {
     path: '/u/:username/invite',
     component: InvitePage,
   };
+  app.notificationComponents.user_invited = UserInvitedNotification;
   extend(UserPage.prototype, 'navItems', function (items) {
     if (app.session.user) {
       items.add(
@@ -45,6 +48,13 @@ app.initializers.add('xypp/flarum-invite-user', () => {
         10
       );
     }
+  });
+  extend(NotificationGrid.prototype, 'notificationTypes', function (items) {
+    items.add('user_invited', {
+      name: 'user_invited',
+      icon: 'fas fa-user-check',
+      label: app.translator.trans('xypp-invite-user.forum.notification.user_invited_label')
+    });
   });
   setTimeout(() => {
     if (app.forum.invitation()) {
