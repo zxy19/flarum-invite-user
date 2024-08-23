@@ -1,0 +1,39 @@
+xypp-invite-user:
+  forum:
+    page:
+      title: 邀请
+      code:
+        title: 邀请用户
+        code: 邀请码
+        url: 邀请链接
+      my:
+        title: 我的邀请用户
+        code: 输入邀请码
+        inviter: 你已经接受了该用户作为你的邀请人
+        accept: 接受邀请
+      invite:
+        title: 我邀请的用户
+        username: 用户名
+        avatar: 头像
+    confirm:
+      title: 确认邀请
+      msg: 用户 {username} 邀请你加入论坛。 点击下方按钮接受该用户作为你的邀请人。
+      alert: 你只能接受一个用户作为邀请人.
+      accept: 接受
+      success: 成功
+    invite: 邀请
+    notification:
+      user_invited: "{username}接受了你的邀请"
+      user_invited_label: 邀请被接受
+  admin:
+    settings:
+      reward_invite:
+        title: 奖励邀请
+        description: 奖励发出邀请的用户（需要antoinefr/flarum-ext-money）
+      reward_be_invited:
+        title: 奖励受邀
+        description: 奖励接受邀请的用户（需要antoinefr/flarum-ext-money）
+  api:
+    invited_by_user_id_is_self: 你不能邀请自己
+    has_already_be_invited: 你已经接受了另一个邀请人
+    invited_by_user_id_is_empty: 邀请人id为空

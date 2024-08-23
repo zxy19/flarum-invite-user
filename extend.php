@@ -53,7 +53,7 @@ return [
         ->addInclude(['inviteCode', "invitation", "invitation.user", "invitedByUser"])
         ->prepareDataForSerialization(ForumRelation::class),
     (new Extend\Notification())
-        ->type(UserInvitedNotification::class, InvitedUserSerializer::class),
+        ->type(UserInvitedNotification::class, InvitedUserSerializer::class, ['alert']),
     (new Extend\Settings())
         ->default('xypp-invite.reward_be_invited', 5)
         ->default('xypp-invite.reward_inviter', 10)

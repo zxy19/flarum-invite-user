@@ -49,7 +49,7 @@ class AddInvitedByUserController extends AbstractCreateController
             $invitedUserModel->save();
 
             $this->inviteReward->notify($invitedByUser, $actor, $invitedUserModel);
-            $this->inviteReward->reward($invitedBy, $actor);
+            $this->inviteReward->reward($invitedByUser, $actor);
 
             return $invitedUserModel;
         } else {

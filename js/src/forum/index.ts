@@ -3,7 +3,7 @@ import User from 'flarum/common/models/User';
 import Model from 'flarum/common/Model';
 import InvitedUser from '../common/model/InvitedUser';
 import InviteCode from '../common/model/InviteCode';
-import { extend } from 'flarum/common/extend';
+import { extend, override } from 'flarum/common/extend';
 import UserPage from 'flarum/forum/components/UserPage';
 import LinkButton from 'flarum/common/components/LinkButton';
 import { InvitePage } from './components/InvitePage';
@@ -11,7 +11,8 @@ import Forum from 'flarum/common/models/Forum';
 import ConfirmModal from './components/ConfirmModal';
 import { processInviteCode } from './utils/inviteCodeUtil';
 import NotificationGrid from 'flarum/forum/components/NotificationGrid';
-import UserInvitedNotification from './notification/QuestDoneNotification';
+import UserInvitedNotification from './notification/UserInvitedNotification';
+import PostMeta from 'flarum/forum/components/PostMeta';
 function createWarpedModel<T>(call: () => T | false | null | undefined): () => (T | undefined) {
   return function (this: any) {
     return call.call(this) || undefined;
@@ -74,5 +75,10 @@ app.initializers.add('xypp/flarum-invite-user', () => {
       });
     }
   }, 1000);
+  override(PostMeta.prototype, "getPermalink", (o, post: any) => {
+    if (app.forum.inviteCode()) {
+      return o(post) + "?inviteCode=" + app.forum.inviteCode()?.code();
+    }
+    return o(post);
+  })
 });
-

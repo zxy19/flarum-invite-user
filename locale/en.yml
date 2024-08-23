@@ -12,7 +12,7 @@ xypp-invite-user:
         inviter: You have accepted the user as your invite user.
         accept: Accept
       invite:
-        title: Invited User
+        title: Invited User by Me
         username: Username
         avatar: Avatar
     confirm:
@@ -29,10 +29,10 @@ xypp-invite-user:
     settings:
       reward_invite:
         title: Reward Invite
-        description: Reward to inviter.
+        description: Reward to inviter.(Requires antoinefr/flarum-ext-money)
       reward_be_invited:
         title: Reward Be Invited
-        description: Reward to user be invited.
+        description: Reward to user be invited.(Requires antoinefr/flarum-ext-money)
   api:
     invited_by_user_id_is_self: You cannot invite yourself.
     has_already_be_invited: You have already accepted another invite user.

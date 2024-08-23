@@ -64,18 +64,18 @@ export class InvitePage extends UserPage {
                     <h2>{_trans("my.title")}</h2>
                     {
                         showIf(!!(this.user.invitedByUser()),
-                            [
+                            (() => [
                                 <div>
                                     <label for="xypp-invite-code-input">{_trans("my.inviter")}</label>
                                 </div>,
                                 <div>
-                                    <Link className='invited-by-user-container' href={app.route.user(this.user.invitedByUser()?.inviter() as User)}>
-                                        {avatar(this.user.invitedByUser()?.inviter() || null)}
+                                    <Link className='invited-by-user-container' href={app.route.user(this.user?.invitedByUser()?.inviter() as User)}>
+                                        {avatar(this.user?.invitedByUser()?.inviter() || null)}
                                         &nbsp;
-                                        {username(this.user.invitedByUser()?.inviter() || null)}
+                                        {username(this.user?.invitedByUser()?.inviter() || null)}
                                     </Link>
                                 </div>
-                            ]
+                            ]).bind(this)
                             ,
                             [
                                 <div className="Form-group">

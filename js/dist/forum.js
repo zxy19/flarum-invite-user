@@ -345,7 +345,10 @@ var InvitePage = /*#__PURE__*/function (_UserPage) {
     })));
   };
   _proto.content = function content() {
-    var _app$session, _app$forum$inviteCode, _app$forum$inviteCode2, _this$user$invitedByU, _this$user$invitedByU2, _this$user$invitedByU3;
+    var _app$session,
+      _app$forum$inviteCode,
+      _app$forum$inviteCode2,
+      _this3 = this;
     if (!this.user || this.loading) {
       return m((flarum_common_components_LoadingIndicator__WEBPACK_IMPORTED_MODULE_4___default()), {
         size: 46
@@ -373,12 +376,15 @@ var InvitePage = /*#__PURE__*/function (_UserPage) {
       type: "text",
       className: "FormControl",
       value: flarum_forum_app__WEBPACK_IMPORTED_MODULE_5___default().forum.attribute("baseUrl") + "?inviteCode=" + ((_app$forum$inviteCode2 = flarum_forum_app__WEBPACK_IMPORTED_MODULE_5___default().forum.inviteCode()) == null ? void 0 : _app$forum$inviteCode2.code())
-    }))) : "", m("div", null, m("h2", null, _trans("my.title")), (0,_utils_nodeUtil__WEBPACK_IMPORTED_MODULE_10__.showIf)(!!this.user.invitedByUser(), [m("div", null, m("label", {
-      "for": "xypp-invite-code-input"
-    }, _trans("my.inviter"))), m("div", null, m((flarum_common_components_Link__WEBPACK_IMPORTED_MODULE_9___default()), {
-      className: "invited-by-user-container",
-      href: flarum_forum_app__WEBPACK_IMPORTED_MODULE_5___default().route.user((_this$user$invitedByU = this.user.invitedByUser()) == null ? void 0 : _this$user$invitedByU.inviter())
-    }, flarum_common_helpers_avatar__WEBPACK_IMPORTED_MODULE_7___default()(((_this$user$invitedByU2 = this.user.invitedByUser()) == null ? void 0 : _this$user$invitedByU2.inviter()) || null), "\xA0", flarum_common_helpers_username__WEBPACK_IMPORTED_MODULE_8___default()(((_this$user$invitedByU3 = this.user.invitedByUser()) == null ? void 0 : _this$user$invitedByU3.inviter()) || null)))], [m("div", {
+    }))) : "", m("div", null, m("h2", null, _trans("my.title")), (0,_utils_nodeUtil__WEBPACK_IMPORTED_MODULE_10__.showIf)(!!this.user.invitedByUser(), function () {
+      var _this3$user, _this3$user2, _this3$user3;
+      return [m("div", null, m("label", {
+        "for": "xypp-invite-code-input"
+      }, _trans("my.inviter"))), m("div", null, m((flarum_common_components_Link__WEBPACK_IMPORTED_MODULE_9___default()), {
+        className: "invited-by-user-container",
+        href: flarum_forum_app__WEBPACK_IMPORTED_MODULE_5___default().route.user((_this3$user = _this3.user) == null || (_this3$user = _this3$user.invitedByUser()) == null ? void 0 : _this3$user.inviter())
+      }, flarum_common_helpers_avatar__WEBPACK_IMPORTED_MODULE_7___default()(((_this3$user2 = _this3.user) == null || (_this3$user2 = _this3$user2.invitedByUser()) == null ? void 0 : _this3$user2.inviter()) || null), "\xA0", flarum_common_helpers_username__WEBPACK_IMPORTED_MODULE_8___default()(((_this3$user3 = _this3.user) == null || (_this3$user3 = _this3$user3.invitedByUser()) == null ? void 0 : _this3$user3.inviter()) || null)))];
+    }.bind(this), [m("div", {
       className: "Form-group"
     }, m("label", {
       "for": "xypp-invite-code-input"
@@ -468,7 +474,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_inviteCodeUtil__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./utils/inviteCodeUtil */ "./src/forum/utils/inviteCodeUtil.ts");
 /* harmony import */ var flarum_forum_components_NotificationGrid__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! flarum/forum/components/NotificationGrid */ "flarum/forum/components/NotificationGrid");
 /* harmony import */ var flarum_forum_components_NotificationGrid__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(flarum_forum_components_NotificationGrid__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var _notification_QuestDoneNotification__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./notification/QuestDoneNotification */ "./src/forum/notification/QuestDoneNotification.ts");
+/* harmony import */ var _notification_UserInvitedNotification__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./notification/UserInvitedNotification */ "./src/forum/notification/UserInvitedNotification.ts");
+/* harmony import */ var flarum_forum_components_PostMeta__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! flarum/forum/components/PostMeta */ "flarum/forum/components/PostMeta");
+/* harmony import */ var flarum_forum_components_PostMeta__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(flarum_forum_components_PostMeta__WEBPACK_IMPORTED_MODULE_12__);
+
 
 
 
@@ -502,7 +511,7 @@ flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('xypp/f
     path: '/u/:username/invite',
     component: _components_InvitePage__WEBPACK_IMPORTED_MODULE_6__.InvitePage
   };
-  (flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().notificationComponents).user_invited = _notification_QuestDoneNotification__WEBPACK_IMPORTED_MODULE_11__["default"];
+  (flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().notificationComponents).user_invited = _notification_UserInvitedNotification__WEBPACK_IMPORTED_MODULE_11__["default"];
   (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_3__.extend)((flarum_forum_components_UserPage__WEBPACK_IMPORTED_MODULE_4___default().prototype), 'navItems', function (items) {
     if ((flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().session).user) {
       var _this$user;
@@ -543,14 +552,21 @@ flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('xypp/f
       });
     }
   }, 1000);
+  (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_3__.override)((flarum_forum_components_PostMeta__WEBPACK_IMPORTED_MODULE_12___default().prototype), "getPermalink", function (o, post) {
+    if (flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().forum.inviteCode()) {
+      var _app$forum$inviteCode;
+      return o(post) + "?inviteCode=" + ((_app$forum$inviteCode = flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().forum.inviteCode()) == null ? void 0 : _app$forum$inviteCode.code());
+    }
+    return o(post);
+  });
 });
 
 /***/ }),
 
-/***/ "./src/forum/notification/QuestDoneNotification.ts":
-/*!*********************************************************!*\
-  !*** ./src/forum/notification/QuestDoneNotification.ts ***!
-  \*********************************************************/
+/***/ "./src/forum/notification/UserInvitedNotification.ts":
+/*!***********************************************************!*\
+  !*** ./src/forum/notification/UserInvitedNotification.ts ***!
+  \***********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -579,11 +595,12 @@ var UserInvitedNotification = /*#__PURE__*/function (_Notification) {
     return 'fas fa-user-check';
   };
   _proto.href = function href() {
-    return flarum_forum_app__WEBPACK_IMPORTED_MODULE_2___default().route("user_invited");
+    return flarum_forum_app__WEBPACK_IMPORTED_MODULE_2___default().route("user.invite", {
+      username: this.attrs.notification.subject().slug()
+    });
   };
   _proto.content = function content() {
-    var user = this.attrs.notification.user();
-    var subject = this.attrs.notification.subject();
+    var user = this.attrs.notification.fromUser();
     return flarum_forum_app__WEBPACK_IMPORTED_MODULE_2___default().translator.trans('xypp-invite-user.forum.notification.user_invited', {
       username: user.displayName()
     });
@@ -645,7 +662,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   showIf: () => (/* binding */ showIf)
 /* harmony export */ });
 function showIf(judgement, vnode, def) {
-  return judgement ? vnode : def || "";
+  var r = judgement ? vnode : def || "";
+  if (typeof r === "function") return r();
+  return r;
 }
 
 /***/ }),
@@ -834,6 +853,17 @@ module.exports = flarum.core.compat['forum/components/Notification'];
 
 "use strict";
 module.exports = flarum.core.compat['forum/components/NotificationGrid'];
+
+/***/ }),
+
+/***/ "flarum/forum/components/PostMeta":
+/*!******************************************************************!*\
+  !*** external "flarum.core.compat['forum/components/PostMeta']" ***!
+  \******************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = flarum.core.compat['forum/components/PostMeta'];
 
 /***/ }),
 

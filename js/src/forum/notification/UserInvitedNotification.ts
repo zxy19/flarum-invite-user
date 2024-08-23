@@ -13,12 +13,11 @@ export default class UserInvitedNotification extends Notification<any> {
     }
 
     href() {
-        return app.route("user_invited");
+        return app.route("user.invite", { username: this.attrs.notification.subject().slug() });
     }
 
     content() {
-        const user: User = this.attrs.notification.user();
-        const subject: InvitedUser = this.attrs.notification.subject();
+        const user: User = this.attrs.notification.fromUser();
         return app.translator.trans('xypp-invite-user.forum.notification.user_invited', { username: user.displayName() });
     }
 }

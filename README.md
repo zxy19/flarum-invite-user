@@ -23,5 +23,4 @@ php flarum cache:clear
 ## Links
 
 - [Packagist](https://packagist.org/packages/xypp/flarum-invite-user)
-- [GitHub](https://github.com/xypp/flarum-invite-user)
-- [Discuss](https://discuss.flarum.org/d/PUT_DISCUSS_SLUG_HERE)
+- [GitHub](https://github.com/zxy19/flarum-invite-user)

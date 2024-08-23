@@ -24,11 +24,11 @@
     "extra": {
         "flarum-extension": {
             "title": "Intive User",
-            "category": "",
+            "category": "feature",
             "icon": {
-                "name": "",
-                "color": "",
-                "backgroundColor": ""
+                "name": "fas fa-user-check",
+                "color": "#fff",
+                "backgroundColor": "#1a237e"
             }
         },
         "flarum-cli": {
