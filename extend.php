@@ -44,7 +44,7 @@ return [
         ->hasMany('invitedUsers', InvitedUserSerializer::class)
         ->hasOne('invitedByUser', InvitedUserSerializer::class),
     (new Extend\ApiController(ShowUserController::class))
-        ->addOptionalInclude(['invitedUsers', 'invitedByUser', 'invitedUsers.user', 'invitedByUser.inviter']),
+        ->addOptionalInclude(['invitedUsers', 'invitedByUser', 'invitedUsers.user', 'invitedByUser.inviter', 'invitedByUser.user']),
     (new Extend\Routes('api'))
         ->get('/invite-codes/{code}', 'inviteCode.show', ShowCodeController::class)
         ->post('/invited-users', "invitedUser.create", AddInvitedByUserController::class),

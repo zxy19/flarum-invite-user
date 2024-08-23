@@ -11,10 +11,10 @@ class InvitedUser extends AbstractModel
     protected $table = 'invite_user';
     public function user()
     {
-        return $this->hasOne(User::class, "user_id", "id");
+        return $this->hasOne(User::class, "id", "user_id");
     }
     public function inviter()
     {
-        return $this->hasOne(User::class, "invited_by_user_id", "id");
+        return $this->hasOne(User::class, "id", "invited_by_user_id");
     }
 }

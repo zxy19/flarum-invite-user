@@ -24,10 +24,10 @@ class InvitedUserSerializer extends AbstractSerializer
     }
     public function user($invitedUser)
     {
-        return $this->hasOne($invitedUser, BasicUserSerializer::class);
+        return $this->hasOne($invitedUser, BasicUserSerializer::class, "user");
     }
     public function inviter($invitedUser)
     {
-        return $this->hasOne($invitedUser, BasicUserSerializer::class);
+        return $this->hasOne($invitedUser, BasicUserSerializer::class, "inviter");
     }
 }
