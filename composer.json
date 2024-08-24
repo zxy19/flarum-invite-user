@@ -53,6 +53,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require-dev": {
-        "antoinefr/flarum-ext-money": "^1.3"
+        "antoinefr/flarum-ext-money": "^1.3",
+        "xypp/forum-quests": "*"
     }
 }

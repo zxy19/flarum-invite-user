@@ -13,6 +13,7 @@ import { processInviteCode } from './utils/inviteCodeUtil';
 import NotificationGrid from 'flarum/forum/components/NotificationGrid';
 import UserInvitedNotification from './notification/UserInvitedNotification';
 import PostMeta from 'flarum/forum/components/PostMeta';
+import { addCondition } from '@xypp-forum-quests/forum'
 function createWarpedModel<T>(call: () => T | false | null | undefined): () => (T | undefined) {
   return function (this: any) {
     return call.call(this) || undefined;
@@ -80,5 +81,10 @@ app.initializers.add('xypp/flarum-invite-user', () => {
       return o(post) + "?inviteCode=" + app.forum.inviteCode()?.code();
     }
     return o(post);
-  })
+  });
+
+  if (flarum.extensions['xypp-forum-quests']) {
+    addCondition("user_be_invited", app.translator.trans(`xypp-invite-user.forum.condition.user_be_invited`) + "");
+    addCondition("user_invite", app.translator.trans(`xypp-invite-user.forum.condition.user_invite`) + "");
+  }
 });

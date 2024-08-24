@@ -13,7 +13,7 @@ export default class UserInvitedNotification extends Notification<any> {
     }
 
     href() {
-        return app.route("user.invite", { username: this.attrs.notification.subject().slug() });
+        return app.route("user.invite", { username: this.attrs.notification.fromUser().slug() });
     }
 
     content() {

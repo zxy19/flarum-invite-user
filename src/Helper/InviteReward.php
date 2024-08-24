@@ -6,6 +6,8 @@ use Flarum\Extension\ExtensionManager;
 use Flarum\Notification\NotificationSyncer;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\User;
+use Xypp\ForumQuests\Data\ConditionData;
+use Xypp\ForumQuests\Event\QuestConditionData;
 use Xypp\InviteUser\InvitedUser;
 use Illuminate\Events\Dispatcher;
 use Xypp\InviteUser\Notification\UserInvitedNotification;
@@ -50,6 +52,20 @@ class InviteReward
     }
     public function notify(User $inviter, User $user, InvitedUser $invitedUser)
     {
+        if ($this->extensionManager->isEnabled("xypp-forum-quests")) {
+            $this->events->dispatch(
+                new QuestConditionData(
+                    $inviter,
+                    [new ConditionData('user_invite', 1)]
+                )
+            );
+            $this->events->dispatch(
+                new QuestConditionData(
+                    $user,
+                    [new ConditionData('user_be_invited', 1)]
+                )
+            );
+        }
         $this->notifications->sync(
             new UserInvitedNotification($invitedUser, $user),
             [$inviter]

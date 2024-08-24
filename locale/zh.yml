@@ -25,6 +25,9 @@ xypp-invite-user:
     notification:
       user_invited: "{username}接受了你的邀请"
       user_invited_label: 邀请被接受
+    condition:
+      user_invite: "邀请的用户"
+      user_be_invited: "被邀请的用户"
   admin:
     settings:
       reward_invite:
@@ -33,6 +36,9 @@ xypp-invite-user:
       reward_be_invited:
         title: 奖励受邀
         description: 奖励接受邀请的用户（需要antoinefr/flarum-ext-money）
+    condition:
+      user_invite: "邀请的用户"
+      user_be_invited: "被邀请的用户"
   api:
     invited_by_user_id_is_self: 你不能邀请自己
     has_already_be_invited: 你已经接受了另一个邀请人

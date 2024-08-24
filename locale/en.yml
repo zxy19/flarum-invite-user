@@ -25,6 +25,9 @@ xypp-invite-user:
     notification:
       user_invited: "{username} just accepted your invitation."
       user_invited_label: Invitation Accepted
+    condition:
+      user_invite: "Invite User"
+      user_be_invited: "Be Invited"
   admin:
     settings:
       reward_invite:
@@ -33,6 +36,9 @@ xypp-invite-user:
       reward_be_invited:
         title: Reward Be Invited
         description: Reward to user be invited.(Requires antoinefr/flarum-ext-money)
+    condition:
+      user_invite: "Invite User"
+      user_be_invited: "Be Invited"
   api:
     invited_by_user_id_is_self: You cannot invite yourself.
     has_already_be_invited: You have already accepted another invite user.

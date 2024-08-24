@@ -17,14 +17,17 @@ use Flarum\Api\Serializer\BasicUserSerializer;
 use Flarum\Api\Serializer\ForumSerializer;
 use Flarum\Extend;
 use Flarum\User\User;
+use Xypp\ForumQuests\Extend\ConditionProvider;
 use Xypp\InviteUser\Api\Controller\AddInvitedByUserController;
 use Xypp\InviteUser\Api\Controller\CreateCodeController;
 use Xypp\InviteUser\Api\Controller\ShowCodeController;
 use Xypp\InviteUser\Api\Serializer\InvitedCodeSerializer;
 use Xypp\InviteUser\Api\Serializer\InvitedUserSerializer;
+use Xypp\InviteUser\Condition\UserBeInvited;
+use Xypp\InviteUser\Condition\UserInvite;
 use Xypp\InviteUser\Notification\UserInvitedNotification;
 
-return [
+$ret = [
     (new Extend\Frontend('forum'))
         ->js(__DIR__ . '/js/dist/forum.js')
         ->css(__DIR__ . '/less/forum.less'),
@@ -58,3 +61,11 @@ return [
         ->default('xypp-invite.reward_be_invited', 5)
         ->default('xypp-invite.reward_inviter', 10)
 ];
+
+if (class_exists(\Xypp\ForumQuests\ConditionDefinition::class)) {
+    $ret[] = (new ConditionProvider())
+        ->provide(UserBeInvited::class)
+        ->provide(UserInvite::class);
+}
+
+return $ret;
