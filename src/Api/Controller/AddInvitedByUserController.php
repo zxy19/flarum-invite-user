@@ -42,6 +42,15 @@ class AddInvitedByUserController extends AbstractCreateController
                 ]);
             }
             $invitedByUser = User::findOrFail($invitedBy);
+
+            if (!$this->settings->get("xypp-invite.invite_each_other")) {
+                if (InvitedUser::where('user_id', $invitedByUser->id)->where('invited_by_user_id', $actor->id)->exists()) {
+                    throw new \Flarum\Foundation\ValidationException([
+                        'message' => $this->translator->trans('xypp-invite-user.api.invited_each_other')
+                    ]);
+                }
+            }
+
             $invitedUserModel = new InvitedUser();
             $invitedUserModel->invited_by_user_id = $invitedByUser->id;
             $invitedUserModel->user_id = $actor->id;

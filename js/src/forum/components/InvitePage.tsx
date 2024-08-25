@@ -11,6 +11,8 @@ import InviteCode from '../../common/model/InviteCode';
 import { showIf } from '../utils/nodeUtil';
 import { processInviteCode } from '../utils/inviteCodeUtil';
 import ConfirmModal from './ConfirmModal';
+import Placeholder from 'flarum/common/components/Placeholder';
+import humanTime from 'flarum/common/helpers/humanTime';
 function _trans(key: string, ...params: any) {
     return app.translator.trans(`xypp-invite-user.forum.page.${key}`, ...params);
 }
@@ -45,7 +47,7 @@ export class InvitePage extends UserPage {
         }
         return (
             <div className="invite-page-container">
-                {app.session?.user?.id() === this.user.id() ?
+                {showIf(app.session?.user?.id() === this.user.id(),
                     <div>
                         <h2>{_trans("code.title")}</h2>
                         <div className="Form-group">
@@ -59,7 +61,7 @@ export class InvitePage extends UserPage {
                             } />
                         </div>
                     </div>
-                    : ""}
+                )}
                 <div>
                     <h2>{_trans("my.title")}</h2>
                     {
@@ -77,47 +79,58 @@ export class InvitePage extends UserPage {
                                 </div>
                             ]).bind(this)
                             ,
-                            [
-                                <div className="Form-group">
-                                    <label for="xypp-invite-code-input">{_trans("my.code")}</label>
-                                    <input id="xypp-invite-code-input" type="text" className='FormControl' />
-                                </div>,
-                                <div className="Form-group">
-                                    <Button disabled={this.queryCode}
-                                        loading={this.queryCode}
-                                        className="Button Button--primary"
-                                        onclick={this.fillCode.bind(this)}>
-                                        {_trans("my.accept")}
-                                    </Button>
-                                </div>
-                            ]
+                            showIf(app.session?.user?.id() === (this.user.id() as string),
+                                [
+                                    <div className="Form-group">
+                                        <label for="xypp-invite-code-input">{_trans("my.code")}</label>
+                                        <input id="xypp-invite-code-input" type="text" className='FormControl' />
+                                    </div>,
+                                    <div className="Form-group">
+                                        <Button disabled={this.queryCode}
+                                            loading={this.queryCode}
+                                            className="Button Button--primary"
+                                            onclick={this.fillCode.bind(this)}>
+                                            {_trans("my.accept")}
+                                        </Button>
+                                    </div>
+                                ],
+                                <Placeholder text={_trans("my.no-inviter")} />
+                            )
                         )
                     }
                 </div>
-                <div>
+                <div className='invite-page-invited-users'>
                     <h2>{_trans("invite.title")}</h2>
-                    <table className='Table'>
-                        <thead>
-                            <tr>
-                                <th>{_trans("invite.avatar")}</th>
-                                <th>{_trans("invite.username")}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {(this.user.invitedUsers() || []).map((user) => (
-                                <tr key={user.id()}>
-                                    <td>
-                                        {avatar(user.user() || null)}
-                                    </td>
-                                    <td>
-                                        <Link href={user.user() || app.route.user(user.user() as User)}>
-                                            {username(user.user() || null)}
-                                        </Link>
-                                    </td>
+                    {showIf(!!(this.user.invitedUsers()?.length),
+                        <table className='Table'>
+                            <thead>
+                                <tr>
+                                    <th>{_trans("invite.avatar")}</th>
+                                    <th>{_trans("invite.username")}</th>
+                                    <th>{_trans("invite.time")}</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {(this.user.invitedUsers() || []).map((user) => (
+                                    <tr key={user.id()}>
+                                        <td>
+                                            {avatar(user.user() || null)}
+                                        </td>
+                                        <td>
+                                            <Link href={user.user() && app.route.user(user.user() as User)}>
+                                                {username(user.user() || null)}
+                                            </Link>
+                                        </td>
+                                        <td>
+                                            {humanTime(user.created_at())}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        ,
+                        <Placeholder text={_trans("invite.empty")} />
+                    )}
                 </div>
             </div>
         );

@@ -20,6 +20,7 @@ class InvitedUserSerializer extends AbstractSerializer
             'id' => $invitedUser->id,
             'user_id' => $invitedUser->user_id,
             'invited_by_user_id' => $invitedUser->invited_by_user_id,
+            'created_at' => $invitedUser->created_at
         ];
     }
     public function user($invitedUser)

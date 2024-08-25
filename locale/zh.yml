@@ -11,10 +11,13 @@ xypp-invite-user:
         code: 输入邀请码
         inviter: 你已经接受了该用户作为你的邀请人
         accept: 接受邀请
+        no-inviter: 这个用户没有接受任何邀请人
       invite:
         title: 我邀请的用户
         username: 用户名
         avatar: 头像
+        empty: 你没有任何邀请用户
+        time: 邀请时间
     confirm:
       title: 确认邀请
       msg: 用户 {username} 邀请你加入论坛。 点击下方按钮接受该用户作为你的邀请人。
@@ -36,6 +39,9 @@ xypp-invite-user:
       reward_be_invited:
         title: 奖励受邀
         description: 奖励接受邀请的用户（需要antoinefr/flarum-ext-money）
+      invite_each_other:
+        title: 互相邀请
+        description: 用户是否可以邀请邀请了该用户的用户
     condition:
       user_invite: "邀请的用户"
       user_be_invited: "被邀请的用户"
@@ -43,3 +49,4 @@ xypp-invite-user:
     invited_by_user_id_is_self: 你不能邀请自己
     has_already_be_invited: 你已经接受了另一个邀请人
     invited_by_user_id_is_empty: 邀请人id为空
+    invited_each_other: 你不能邀请邀请了你的用户

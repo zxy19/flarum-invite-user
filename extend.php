@@ -60,6 +60,7 @@ $ret = [
     (new Extend\Settings())
         ->default('xypp-invite.reward_be_invited', 5)
         ->default('xypp-invite.reward_inviter', 10)
+        ->default('xypp-invite.invite_each_other', true),
 ];
 
 if (class_exists(\Xypp\ForumQuests\ConditionDefinition::class)) {
