@@ -62,7 +62,7 @@ export class InvitePage extends UserPage {
                         </div>
                     </div>
                 )}
-                <div>
+                <div className='invite-page-my'>
                     <h2>{_trans("my.title")}</h2>
                     {
                         showIf(!!(this.user.invitedByUser()),
