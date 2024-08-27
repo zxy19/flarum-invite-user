@@ -13,6 +13,7 @@ import { processInviteCode } from '../utils/inviteCodeUtil';
 import ConfirmModal from './ConfirmModal';
 import Placeholder from 'flarum/common/components/Placeholder';
 import humanTime from 'flarum/common/helpers/humanTime';
+import Alert from 'flarum/common/components/Alert';
 function _trans(key: string, ...params: any) {
     return app.translator.trans(`xypp-invite-user.forum.page.${key}`, ...params);
 }
@@ -142,6 +143,8 @@ export class InvitePage extends UserPage {
         try {
             const codeObj = await processInviteCode(code.val() as string);
             app.modal.show(ConfirmModal, { code: codeObj }, true);
+        } catch (e: any) {
+            app.alerts.show(Alert, { type: 'error' }, e.message);
         } finally {
             this.queryCode = false;
             m.redraw();

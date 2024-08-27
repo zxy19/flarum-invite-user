@@ -10,6 +10,7 @@ use Illuminate\Support\Arr;
 use Psr\Http\Message\ServerRequestInterface;
 use Tobscure\JsonApi\Document;
 use Xypp\InviteUser\Api\Serializer\InvitedUserSerializer;
+use Xypp\InviteUser\Helper\InviteCheck;
 use Xypp\InviteUser\Helper\InviteReward;
 use Xypp\InviteUser\InvitedUser;
 class AddInvitedByUserController extends AbstractCreateController
@@ -18,37 +19,26 @@ class AddInvitedByUserController extends AbstractCreateController
     protected $settings;
     protected $translator;
     protected $inviteReward;
-    public function __construct(SettingsRepositoryInterface $settings, Translator $translator, InviteReward $inviteReward)
+    protected $inviteCheck;
+    public function __construct(SettingsRepositoryInterface $settings, Translator $translator, InviteReward $inviteReward, InviteCheck $inviteCheck)
     {
         $this->settings = $settings;
         $this->translator = $translator;
         $this->inviteReward = $inviteReward;
+        $this->inviteCheck = $inviteCheck;
     }
     protected function data(ServerRequestInterface $request, Document $document)
     {
         $actor = RequestUtil::getActor($request);
-        if (InvitedUser::where('user_id', $actor->id)->exists()) {
-            throw new \Flarum\Foundation\ValidationException([
-                'message' => $this->translator->trans('xypp-invite-user.api.has_already_be_invited')
-            ]);
-        }
-
         $attributes = Arr::get($request->getParsedBody(), 'data.attributes', []);
-
         if ($invitedBy = Arr::get($attributes, 'invited_by_user_id')) {
-            if ($invitedBy == $actor->id) {
-                throw new \Flarum\Foundation\ValidationException([
-                    'message' => $this->translator->trans('xypp-invite-user.api.invited_by_user_id_is_self')
-                ]);
-            }
             $invitedByUser = User::findOrFail($invitedBy);
-
-            if (!$this->settings->get("xypp-invite.invite_each_other")) {
-                if (InvitedUser::where('user_id', $invitedByUser->id)->where('invited_by_user_id', $actor->id)->exists()) {
-                    throw new \Flarum\Foundation\ValidationException([
-                        'message' => $this->translator->trans('xypp-invite-user.api.invited_each_other')
-                    ]);
-                }
+            
+            [$unavailable, $message] = $this->inviteCheck->check($invitedByUser, $actor);
+            if ($unavailable) {
+                throw new \Flarum\Foundation\ValidationException([
+                    'message' => $message
+                ]);
             }
 
             $invitedUserModel = new InvitedUser();

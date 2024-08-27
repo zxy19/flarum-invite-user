@@ -5,9 +5,15 @@ use Flarum\Api\Controller\ShowForumController;
 use Flarum\Http\RequestUtil;
 use Illuminate\Support\Arr;
 use Psr\Http\Message\ServerRequestInterface;
+use Xypp\InviteUser\Helper\InviteCheck;
 
 class ForumRelation
 {
+    protected InviteCheck $inviteCheck;
+    public function __construct(InviteCheck $inviteCheck)
+    {
+        $this->inviteCheck = $inviteCheck;
+    }
     /**
      * @param ShowForumController $controller
      * @param $data
@@ -35,8 +41,12 @@ class ForumRelation
         $data['invitedByUser'] = $invitedBy;
         $data['invitation'] = null;
         if ($inviteCode = Arr::get($request->getQueryParams(), "inviteCode")) {
-            if (!$invitedBy)
-                $data['invitation'] = InviteCode::where('code', $inviteCode)->first();
+            if (!$invitedBy) {
+                $invite = InviteCode::where('code', $inviteCode)->first();
+                [$unavailable, $message] = $this->inviteCheck->check($invite->user, $actor);
+                if (!$unavailable)
+                    $data['invitation'] = $invite;
+            }
         }
     }
 }

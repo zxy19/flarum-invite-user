@@ -74,7 +74,7 @@ app.initializers.add('xypp/flarum-invite-user', () => {
         processInviteCode(localStorage.getItem('inviteCode') + "").then(code => {
           localStorage.removeItem('inviteCode');
           app.modal.show(ConfirmModal, { code });
-        });
+        }).catch(e => { });
     }
   }, 1000);
   override(PostMeta.prototype, "getPermalink", (o, post: any) => {
