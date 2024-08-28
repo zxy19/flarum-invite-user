@@ -62,6 +62,8 @@ $ret = [
         ->default('xypp-invite.reward_inviter', 10)
         ->default('xypp-invite.invite_each_other', true)
         ->default('xypp-invite.invite_new_user_only', false),
+    (new Extend\User())
+        ->registerPreference("xyppInviteNoTip", null, false)
 ];
 
 if (class_exists(\Xypp\ForumQuests\ConditionDefinition::class)) {

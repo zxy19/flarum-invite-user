@@ -14,6 +14,7 @@ import ConfirmModal from './ConfirmModal';
 import Placeholder from 'flarum/common/components/Placeholder';
 import humanTime from 'flarum/common/helpers/humanTime';
 import Alert from 'flarum/common/components/Alert';
+import Switch from 'flarum/common/components/Switch'
 function _trans(key: string, ...params: any) {
     return app.translator.trans(`xypp-invite-user.forum.page.${key}`, ...params);
 }
@@ -82,6 +83,14 @@ export class InvitePage extends UserPage {
                             ,
                             showIf(app.session?.user?.id() === (this.user.id() as string),
                                 [
+                                    <Switch
+                                        state={((app.session?.user?.preferences() || {})["xyppInviteNoTip"] || false)}
+                                        onchange={(v: boolean) => {
+                                            app.session?.user?.savePreferences({
+                                                "xyppInviteNoTip": v
+                                            });
+                                        }}
+                                    >{_trans("no_tip")}</Switch>,
                                     <div className="Form-group">
                                         <label for="xypp-invite-code-input">{_trans("my.code")}</label>
                                         <input id="xypp-invite-code-input" type="text" className='FormControl' />

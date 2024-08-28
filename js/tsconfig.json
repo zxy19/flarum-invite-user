@@ -20,7 +20,6 @@
         "../vendor/flarum/core/js/dist-typings/*"
       ],
       // <CUSTOM-2>
-      ,
       "@xypp-forum-quests/*": [
         "../vendor/xypp/forum-quests/js/dist-typings/*"
       ]

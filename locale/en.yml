@@ -18,10 +18,11 @@ xypp-invite-user:
         avatar: Avatar
         empty: You have not invited any user.
         time: Invited Time
+      no_tip: Never show inviter modal for me
     confirm:
       title: Confirm Invitation
       msg: User {username} invited you to the forum. Click the button below to accept this user as your invite user.
-      alert: You can only accept one user as invite user.
+      alert: You can only accept one user as invite user. You can close this modal in profile->invite
       accept: Accept
       success: Success.
     invite: Invite

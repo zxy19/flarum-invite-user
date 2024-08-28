@@ -18,10 +18,11 @@ xypp-invite-user:
         avatar: 头像
         empty: 你没有任何邀请用户
         time: 邀请时间
+      no_tip: 不再为我显示邀请人确认框
     confirm:
       title: 确认邀请
       msg: 用户 {username} 邀请你加入论坛。 点击下方按钮接受该用户作为你的邀请人。
-      alert: 你只能接受一个用户作为邀请人.
+      alert: 你只能接受一个用户作为邀请人。你可以在个人资料-邀请中关闭该弹窗
       accept: 接受
       success: 成功
     invite: 邀请

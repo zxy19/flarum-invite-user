@@ -19,7 +19,7 @@ class UserInvite extends ConditionDefinition
             $flag = $invitedUser->id;
             $accumulation->updateValue($invitedUser->created_at, 1);
         });
-        $accumulation->updateFlag($flag);
+        $accumulation->updateFlag($flag ?: "");
         return $accumulation->dirty;
     }
     public function updateValue(User $user, ConditionAccumulation $accumulation): bool

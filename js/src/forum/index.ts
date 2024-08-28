@@ -59,6 +59,10 @@ app.initializers.add('xypp/flarum-invite-user', () => {
     });
   });
   setTimeout(() => {
+    if (app.session?.user && ((app.session?.user?.preferences() || {})["xyppInviteNoTip"] || false)) {
+      return;
+    }
+
     if (app.forum.invitation()) {
       if (app.session?.user) {
         localStorage.removeItem('inviteCode');
@@ -70,11 +74,13 @@ app.initializers.add('xypp/flarum-invite-user', () => {
         localStorage.setItem('inviteCode', app.forum.invitation()?.code() || "");
       }
     } else if (localStorage.getItem('inviteCode')) {
-      if (!app.forum.invitedByUser())
-        processInviteCode(localStorage.getItem('inviteCode') + "").then(code => {
-          localStorage.removeItem('inviteCode');
-          app.modal.show(ConfirmModal, { code });
-        }).catch(e => { });
+      if (app.session?.user) {
+        if (!app.forum.invitedByUser())
+          processInviteCode(localStorage.getItem('inviteCode') + "").then(code => {
+            localStorage.removeItem('inviteCode');
+            app.modal.show(ConfirmModal, { code });
+          }).catch(e => { });
+      }
     }
   }, 1000);
   override(PostMeta.prototype, "getPermalink", (o, post: any) => {
