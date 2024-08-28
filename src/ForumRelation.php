@@ -43,9 +43,11 @@ class ForumRelation
         if ($inviteCode = Arr::get($request->getQueryParams(), "inviteCode")) {
             if (!$invitedBy) {
                 $invite = InviteCode::where('code', $inviteCode)->first();
-                [$unavailable, $message] = $this->inviteCheck->check($invite->user, $actor);
-                if (!$unavailable)
-                    $data['invitation'] = $invite;
+                if ($invite) {
+                    [$unavailable, $message] = $this->inviteCheck->check($invite->user, $actor);
+                    if (!$unavailable)
+                        $data['invitation'] = $invite;
+                }
             }
         }
     }
