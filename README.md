@@ -4,6 +4,14 @@
 
 A [Flarum](http://flarum.org) extension. Allow user to invite other and gain rewards from it.
 
+This Extension allows user to accept another user as his invite user.
+
+The extension also adds invite code to the post url.
+
+When the url with invite code loaded or the invite code is fill, an modal will be shown to user to accept the invite.
+
+After the user accepted the invite, both user will gain rewards.
+
 ## Installation
 
 Install with composer:
