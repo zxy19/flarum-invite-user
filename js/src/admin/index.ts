@@ -26,8 +26,4 @@ app.initializers.add('xypp/flarum-invite-user', () => {
       label: app.translator.trans('xypp-invite-user.admin.settings.invite_new_user_only.title'),
       help: app.translator.trans('xypp-invite-user.admin.settings.invite_new_user_only.description'),
     })
-  if (flarum.extensions['xypp-forum-quests']) {
-    addCondition("user_be_invited", app.translator.trans(`xypp-invite-user.admin.condition.user_be_invited`) + "");
-    addCondition("user_invite", app.translator.trans(`xypp-invite-user.admin.condition.user_invite`) + "");
-  }
 });

@@ -54,6 +54,6 @@
     "prefer-stable": true,
     "require-dev": {
         "antoinefr/flarum-ext-money": "^1.3",
-        "xypp/forum-quests": "*"
+        "xypp/collector": "*"
     }
 }

@@ -1,5 +1,7 @@
 # Intive User
 
+**V2.0.0 版本与 Forum-Quests v1.x 不兼容**
+
 ![License](https://img.shields.io/badge/license-GPLv3-blue.svg) [![Latest Stable Version](https://img.shields.io/packagist/v/xypp/flarum-invite-user.svg)](https://packagist.org/packages/xypp/flarum-invite-user) [![Total Downloads](https://img.shields.io/packagist/dt/xypp/flarum-invite-user.svg)](https://packagist.org/packages/xypp/flarum-invite-user)
 
 一个 [Flarum](http://flarum.org) 拓展，允许用户邀请其他人加入论坛并获得奖励.

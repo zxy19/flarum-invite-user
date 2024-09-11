@@ -17,7 +17,6 @@ use Flarum\Api\Serializer\BasicUserSerializer;
 use Flarum\Api\Serializer\ForumSerializer;
 use Flarum\Extend;
 use Flarum\User\User;
-use Xypp\ForumQuests\Extend\ConditionProvider;
 use Xypp\InviteUser\Api\Controller\AddInvitedByUserController;
 use Xypp\InviteUser\Api\Controller\CreateCodeController;
 use Xypp\InviteUser\Api\Controller\ShowCodeController;
@@ -66,8 +65,8 @@ $ret = [
         ->registerPreference("xyppInviteNoTip", null, false)
 ];
 
-if (class_exists(\Xypp\ForumQuests\ConditionDefinition::class)) {
-    $ret[] = (new ConditionProvider())
+if (class_exists(\Xypp\Collector\Extend\ConditionProvider::class)) {
+    $ret[] = (new \Xypp\Collector\Extend\ConditionProvider())
         ->provide(UserBeInvited::class)
         ->provide(UserInvite::class);
 }

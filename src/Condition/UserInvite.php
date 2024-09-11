@@ -2,15 +2,15 @@
 
 namespace Xypp\InviteUser\Condition;
 use Flarum\User\User;
-use Xypp\ForumQuests\ConditionDefinition;
-use Xypp\ForumQuests\Data\ConditionAccumulation;
+use Xypp\Collector\ConditionDefinition;
+use Xypp\Collector\Data\ConditionAccumulation;
 use Xypp\InviteUser\InvitedUser;
 
 class UserInvite extends ConditionDefinition
 {
     public function __construct()
     {
-        parent::__construct('user_invite');
+        parent::__construct('user_invite',null,"xypp-invite-user.forum.condition.user_invite");
     }
     public function getAbsoluteValue(User $user, ConditionAccumulation $accumulation): bool
     {

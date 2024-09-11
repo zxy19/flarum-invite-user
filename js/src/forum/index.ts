@@ -89,9 +89,4 @@ app.initializers.add('xypp/flarum-invite-user', () => {
     }
     return o(post);
   });
-
-  if (flarum.extensions['xypp-forum-quests']) {
-    addCondition("user_be_invited", app.translator.trans(`xypp-invite-user.forum.condition.user_be_invited`) + "");
-    addCondition("user_invite", app.translator.trans(`xypp-invite-user.forum.condition.user_invite`) + "");
-  }
 });
